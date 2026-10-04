@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conflux — Supercharge Your Discord</title>
+<meta name="description" content="🌌 Conflux — Bot quản lý server Discord toàn diện. Nơi mọi thứ hội tụ.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET & ROOT
+============================================================ */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --purple:#8B5CF6;
+  --purple-dark:#6B21A8;
+  --purple-light:#a78bfa;
+  --cyan:#06B6D4;
+  --cyan-light:#22d3ee;
+  --bg-dark:#1a1a2e;
+  --bg-darker:#14142a;
+  --bg-card:#252540;
+  --bg-card-hover:#2d2d4a;
+  --text:#ffffff;
+  --text-muted:#a1a1b8;
+  --border:rgba(255,255,255,0.08);
+  --green:#22c55e;
+  --red:#ef4444;
+  --gold:#fbbf24;
+}
+
+html { scroll-behavior:smooth; }
+
+body {
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg-dark);
+  color:var(--text);
+  line-height:1.6;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+a { text-decoration:none; color:inherit; }
+button { font-family:inherit; cursor:pointer; border:none; background:none; }
+img { max-width:100%; display:block; }
+
+/* ============================================================
+   NAVBAR
+============================================================ */
+.navbar {
+  position:sticky;
+  top:0;
+  background:rgba(26,26,46,0.85);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  z-index:100;
+  transition:box-shadow .3s;
+}
+
+.nav-container {
+  max-width:1200px;
+  margin:0 auto;
+  padding:16px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.nav-logo {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:20px;
+  font-weight:800;
+  letter-spacing:-0.5px;
+}
+
+.logo-icon {
+  width:36px;
+  height:36px;
+  border-radius:10px;
+  background:linear-gradient(135deg,var(--purple),var(--cyan));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+}
+
+.nav-links {
+  display:flex;
+  align-items:center;
+  gap:28px;
+  font-size:15px;
+  font-weight:500;
+}
+
+.nav-links a {
+  color:var(--text-muted);
+  transition:color .2s;
+}
+
+.nav-links a:hover { color:var(--text); }
+
+.btn-login {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 18px;
+  background:linear-gradient(135deg,var(--purple),var(--purple-dark));
+  color:#fff !important;
+  border-radius:8px;
+  font-weight:600;
+  transition:all .2s;
+}
+
+.btn-login:hover {
+  transform:translateY(-1px);
+  box-shadow:0 6px 20px rgba(139,92,246,.4);
+}
+
+.nav-toggle {
+  display:none;
+  color:#fff;
+  font-size:24px;
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero {
+  position:relative;
+  padding:100px 24px 80px;
+  text-align:center;
+  background:linear-gradient(180deg,#8B5CF6 0%,#6B21A8 60%,var(--bg-dark) 100%);
+  overflow:hidden;
+}
+
+.hero-bg {
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 20% 30%,rgba(139,92,246,.4) 0%,transparent 50%),
+    radial-gradient(circle at 80% 70%,rgba(6,182,212,.3) 0%,transparent 50%);
+}
+
+.hero-content {
+  position:relative;
+  max-width:900px;
+  margin:0 auto;
+}
+
+.hero h1 {
+  font-size:clamp(32px,6vw,64px);
+  font-weight:900;
+  line-height:1.1;
+  letter-spacing:-2px;
+  margin-bottom:20px;
+}
+
+.gradient-text {
+  background:linear-gradient(135deg,var(--purple-light),var(--cyan-light));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.hero-sub {
+  font-size:18px;
+  color:rgba(255,255,255,.85);
+  margin-bottom:36px;
+}
+
+.hero-buttons {
+  display:flex;
+  gap:16px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:24px;
+}
+
+.btn-primary {
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:#fff;
+  color:#1a1a2e !important;
+  padding:14px 32px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:16px;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 8px 24px rgba(0,0,0,.2);
+}
+
+.btn-primary:hover {
+  transform:translateY(-2px);
+  box-shadow:0 12px 32px rgba(0,0,0,.3);
+}
+
+.btn-secondary {
+  display:inline-flex;
+  align-items:center;
+  padding:14px 32px;
+  border-radius:999px;
+  font-weight:600;
+  font-size:16px;
+  border:1.5px solid rgba(255,255,255,.3);
+  color:#fff;
+  transition:all .2s;
+}
+
+.btn-secondary:hover {
+  background:rgba(255,255,255,.1);
+  border-color:#fff;
+}
+
+.btn-ghost {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(255,255,255,.1);
+  color:#fff;
+  padding:14px 32px;
+  border-radius:999px;
+  font-weight:600;
+  font-size:16px;
+  border:1.5px solid rgba(255,255,255,.25);
+  transition:all .2s;
+}
+
+.btn-ghost:hover {
+  background:rgba(255,255,255,.2);
+  border-color:#fff;
+}
+
+.hero-stats {
+  font-size:15px;
+  color:rgba(255,255,255,.7);
+}
+
+.hero-stats strong {
+  color:#fff;
+  font-weight:700;
+}
+
+/* ============================================================
+   SECTIONS
+============================================================ */
+.section-title {
+  font-size:clamp(28px,4vw,42px);
+  font-weight:900;
+  text-align:center;
+  letter-spacing:-1px;
+  margin-bottom:12px;
+}
+
+.section-sub {
+  text-align:center;
+  color:var(--text-muted);
+  font-size:17px;
+  margin-bottom:48px;
+}
+
+/* ============================================================
+   FEATURES
+============================================================ */
+.why {
+  padding:80px 24px;
+  max-width:1200px;
+  margin:0 auto;
+}
+
+.feature-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;
+}
+
+.feature-card {
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:28px;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+}
+
+.feature-card:hover {
+  background:var(--bg-card-hover);
+  border-color:rgba(139,92,246,.4);
+  transform:translateY(-4px);
+  box-shadow:0 16px 40px rgba(0,0,0,.3);
+}
+
+.feature-icon {
+  width:56px;
+  height:56px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  margin-bottom:20px;
+  box-shadow:0 8px 20px rgba(0,0,0,.2);
+}
+
+.feature-icon.purple { background:linear-gradient(135deg,#8B5CF6,#6B21A8); }
+.feature-icon.red    { background:linear-gradient(135deg,#ef4444,#b91c1c); }
+.feature-icon.cyan   { background:linear-gradient(135deg,#06B6D4,#0891b2); }
+.feature-icon.blue   { background:linear-gradient(135deg,#3b82f6,#1d4ed8); }
+.feature-icon.yellow { background:linear-gradient(135deg,#eab308,#ca8a04); }
+.feature-icon.orange { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.feature-icon.pink   { background:linear-gradient(135deg,#ec4899,#be185d); }
+.feature-icon.violet { background:linear-gradient(135deg,#a78bfa,#7c3aed); }
+.feature-icon.sky    { background:linear-gradient(135deg,#0ea5e9,#0284c7); }
+.feature-icon.indigo { background:linear-gradient(135deg,#6366f1,#4338ca); }
+.feature-icon.green  { background:linear-gradient(135deg,#22c55e,#15803d); }
+.feature-icon.azure  { background:linear-gradient(135deg,#38bdf8,#0284c7); }
+.feature-icon.gold   { background:linear-gradient(135deg,#fbbf24,#d97706); width:72px; height:72px; font-size:32px; }
+
+.feature-card h3 {
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:10px;
+  letter-spacing:-0.3px;
+}
+
+.feature-card p {
+  color:var(--text-muted);
+  font-size:15px;
+  margin-bottom:16px;
+  line-height:1.6;
+}
+
+.feature-link {
+  color:var(--purple);
+  font-weight:600;
+  font-size:15px;
+  transition:color .2s;
+}
+
+.feature-link:hover { color:var(--purple-light); }
+
+/* ============================================================
+   PREMIUM
+============================================================ */
+.premium {
+  padding:40px 24px 80px;
+  max-width:1200px;
+  margin:0 auto;
+}
+
+.premium-card {
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:40px;
+  text-align:center;
+  max-width:700px;
+  margin:0 auto;
+  transition:all .3s;
+}
+
+.premium-card:hover {
+  border-color:rgba(251,191,36,.4);
+  box-shadow:0 20px 50px rgba(251,191,36,.1);
+}
+
+.premium-card h3 {
+  font-size:28px;
+  font-weight:800;
+  margin-bottom:16px;
+}
+
+.premium-card p {
+  color:var(--text-muted);
+  font-size:16px;
+  margin-bottom:20px;
+}
+
+/* ============================================================
+   CTA
+============================================================ */
+.cta {
+  padding:60px 24px 100px;
+}
+
+.cta-card {
+  max-width:900px;
+  margin:0 auto;
+  background:linear-gradient(135deg,#8B5CF6,#6B21A8);
+  border-radius:24px;
+  padding:60px 40px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.cta-card::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.15),transparent 60%);
+  pointer-events:none;
+}
+
+.cta-card h2 {
+  font-size:clamp(26px,4vw,38px);
+  font-weight:900;
+  letter-spacing:-1px;
+  margin-bottom:16px;
+  position:relative;
+}
+
+.cta-card p {
+  font-size:17px;
+  color:rgba(255,255,255,.9);
+  margin-bottom:32px;
+  position:relative;
+}
+
+.cta-buttons {
+  display:flex;
+  gap:16px;
+  justify-content:center;
+  flex-wrap:wrap;
+  position:relative;
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.footer {
+  background:var(--bg-darker);
+  border-top:1px solid var(--border);
+  padding:48px 24px 32px;
+}
+
+.footer-content {
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:32px;
+  flex-wrap:wrap;
+}
+
+.footer-brand h3 {
+  font-size:24px;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.footer-brand p {
+  color:var(--text-muted);
+  font-size:14px;
+}
+
+.footer-links {
+  display:flex;
+  gap:24px;
+  flex-wrap:wrap;
+}
+
+.footer-links a {
+  color:var(--text-muted);
+  font-size:14px;
+  transition:color .2s;
+}
+
+.footer-links a:hover { color:var(--text); }
+
+/* ============================================================
+   DASHBOARD
+============================================================ */
+.dashboard {
+  max-width:1200px;
+  margin:0 auto;
+  padding:40px 24px;
+  min-height:60vh;
+}
+
+.user-header {
+  display:flex;
+  align-items:center;
+  gap:20px;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:32px;
+}
+
+.user-avatar {
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  border:3px solid var(--purple);
+  flex-shrink:0;
+}
+
+.user-info h2 {
+  font-size:24px;
+  font-weight:800;
+  margin-bottom:4px;
+}
+
+.user-info p {
+  color:var(--text-muted);
+  font-size:14px;
+}
+
+.user-badge {
+  display:inline-block;
+  background:linear-gradient(135deg,var(--purple),var(--purple-dark));
+  color:#fff;
+  font-size:11px;
+  padding:3px 10px;
+  border-radius:999px;
+  font-weight:700;
+  margin-left:8px;
+  vertical-align:middle;
+}
+
+.logout-btn {
+  margin-left:auto;
+  padding:10px 20px;
+  background:rgba(239,68,68,.15);
+  color:var(--red);
+  border:1px solid rgba(239,68,68,.3);
+  border-radius:8px;
+  font-weight:600;
+  transition:all .2s;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+.logout-btn:hover { background:rgba(239,68,68,.25); }
+
+.section-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.section-header h3 {
+  font-size:20px;
+  font-weight:800;
+}
+
+.section-header span {
+  color:var(--text-muted);
+  font-size:14px;
+}
+
+.guild-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:16px;
+}
+
+.guild-card {
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:20px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  transition:all .2s;
+  cursor:pointer;
+}
+
+.guild-card:hover {
+  border-color:rgba(139,92,246,.5);
+  transform:translateY(-3px);
+  box-shadow:0 12px 30px rgba(0,0,0,.3);
+}
+
+.guild-icon {
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  flex-shrink:0;
+  background:var(--bg-dark);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  font-size:20px;
+  overflow:hidden;
+}
+
+.guild-icon img {
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.guild-info {
+  overflow:hidden;
+  flex:1;
+}
+
+.guild-info h4 {
+  font-size:15px;
+  font-weight:700;
+  margin-bottom:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.guild-status {
+  font-size:12px;
+  font-weight:600;
+}
+
+.guild-status.active { color:var(--green); }
+.guild-status.inactive { color:var(--gold); }
+
+.empty-state {
+  text-align:center;
+  padding:60px 20px;
+  color:var(--text-muted);
+}
+
+.empty-state svg {
+  width:80px;
+  height:80px;
+  opacity:.3;
+  margin:0 auto 16px;
+}
+
+.empty-state h3 {
+  font-size:20px;
+  margin-bottom:8px;
+  color:var(--text);
+}
+
+/* ============================================================
+   LOADING
+============================================================ */
+.loading {
+  text-align:center;
+  padding:60px 20px;
+  color:var(--text-muted);
+}
+
+.spinner {
+  width:40px;
+  height:40px;
+  border:3px solid var(--border);
+  border-top-color:var(--purple);
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin:0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform:rotate(360deg); }
+}
+
+/* ============================================================
+   ANIMATIONS
+============================================================ */
+.fade-in {
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity .6s ease, transform .6s ease;
+}
+
+.fade-in.visible {
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width:768px) {
+  .nav-links {
+    display:none;
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    background:var(--bg-dark);
+    flex-direction:column;
+    padding:20px;
+    border-bottom:1px solid var(--border);
+    gap:16px;
+  }
+
+  .nav-links.open { display:flex; }
+  .nav-toggle { display:block; }
+
+  .hero { padding:60px 20px; }
+  .hero h1 { letter-spacing:-1px; }
+
+  .feature-grid { grid-template-columns:1fr; }
+  .cta-card { padding:40px 24px; }
+
+  .footer-content {
+    flex-direction:column;
+    text-align:center;
+  }
+
+  .footer-links { justify-content:center; }
+
+  .user-header {
+    flex-direction:column;
+    text-align:center;
+  }
+
+  .logout-btn { margin-left:0; }
+
+  .guild-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="#" class="nav-logo" onclick="showPage('home'); return false;">
+      <div class="logo-icon">🌌</div>
+      <span>Conflux</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#features">Tính năng</a>
+      <a href="#premium">Premium</a>
+      <a href="#docs">Docs</a>
+      <a href="https://discord.gg/yourserver" target="_blank">Support</a>
+      <a href="#" class="btn-login" id="loginBtn" onclick="handleLogin(event)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+        </svg>
+        <span id="loginText">Login</span>
+      </a>
+    </div>
+    <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+
+<!-- ============================================================
+     PAGE: HOME
+============================================================ -->
+<div id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>Supercharge Your<br>Discord With <span class="gradient-text">Conflux</span>.</h1>
+      <p class="hero-sub">Bot quản lý server Discord toàn diện — Nơi mọi thứ hội tụ.</p>
+      <div class="hero-buttons">
+        <a href="https://discord.com/oauth2/authorize?client_id=1556225313598472222&permissions=1101659111702&scope=bot%20applications.commands"
+           class="btn-primary" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+          </svg>
+          Add to Discord
+        </a>
+        <a href="#features" class="btn-secondary">Khám phá tính năng</a>
+      </div>
+      <p class="hero-stats">Được tin dùng bởi <strong id="server-count">1,234</strong> servers</p>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="why" id="features">
+    <h2 class="section-title">Tại sao chọn <span class="gradient-text">Conflux</span>?</h2>
+    <p class="section-sub">Mọi tính năng bạn cần — trong một bot duy nhất.</p>
+
+    <div class="feature-grid">
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon purple">😊</div>
+        <h3>Reaction Roles</h3>
+        <p>Lên đến 250 cặp reaction-role mỗi server. Hỗ trợ verify, reversed, binding và temporary mode.</p>
+        <a href="#" class="feature-link">Tìm hiểu thêm →</a>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon red">🛡️</div>
+        <h3>Moderation</h3>
+        <p>Modlog, hình phạt có thời hạn, sticky roles, lịch sử vi phạm đầy đủ. Mọi thứ mod team cần.</p>
+        <a href="#" class="feature-link">Tìm hiểu thêm →</a>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon cyan">🤖</div>
+        <h3>Automod</h3>
+        <p>Chặn link xấu, spam, mention hàng loạt, attachment spam và từ ngữ độc hại. Cấu hình linh hoạt.</p>
+        <a href="#" class="feature-link">Tìm hiểu thêm →</a>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon blue">📋</div>
+        <h3>Logging</h3>
+        <p>Log tin nhắn xoá/sửa, join/leave, đổi role, ban, invite — chia theo từng kênh gọn gàng.</p>
+        <a href="#" class="feature-link">Tìm hiểu thêm →</a>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon yellow">⌨️</div>
+        <h3>Custom Commands</h3>
+        <p>Tạo lệnh và tính năng riêng bằng TagScript. Không cần code, chỉ cần logic.</p>
+        <a href="#" class="feature-link">Tìm hiểu thêm →</a>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon orange">💡</div>
+        <h3>Suggestions</h3>
+        <p>Thành viên đề xuất ý tưởng và vote. Chế độ ẩn danh, phản hồi từ mod, log quyết định riêng.</p>
+        <a href="#" class="feature-link">Tìm hiểu thêm →</a>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon pink">👋</div>
+        <h3>Greetings</h3>
+        <p>Chào mừng thành viên mới với embed đẹp và biến động. DM riêng, farewell, thông báo ban.</p>
+        <a href="#" class="feature-link">Tìm hiểu thêm →</a>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon violet">🔑</div>
+        <h3>Permissions</h3>
+        <p>Quy tắc từng lệnh, quản lý hàng loạt trên dashboard, override toàn cục, redirect output.</p>
+        <a href="#" class="feature-link">Tìm hiểu thêm →</a>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon sky">⭐</div>
+        <h3>Engagement</h3>
+        <p>Starboard, sticky messages, lệnh vui như 8ball, roll, toproll — giữ cộng đồng sôi động.</p>
+        <a href="#" class="feature-link">Tìm hiểu thêm →</a>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon indigo">🔔</div>
+        <h3>Notifications</h3>
+        <p>Thông báo Twitch và YouTube siêu nhanh — server không bao giờ bỏ lỡ stream hay video mới.</p>
+        <a href="#" class="feature-link">Tìm hiểu thêm →</a>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon green">🎮</div>
+        <h3>Gaming</h3>
+        <p>Nhận thông báo ngay khi game miễn phí hoặc giảm giá trên các store lớn.</p>
+        <a href="#" class="feature-link">Tìm hiểu thêm →</a>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon azure">🌐</div>
+        <h3>Server Discovery</h3>
+        <p>Đưa server vào thư mục công khai và tiếp cận thành viên đang tìm server như bạn.</p>
+        <a href="#" class="feature-link">Tìm hiểu thêm →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PREMIUM -->
+  <section class="premium" id="premium">
+    <div class="premium-card">
+      <div class="feature-icon gold" style="margin:0 auto 20px;">👑</div>
+      <h3>Premium</h3>
+      <p>Custom Avatar và Banner, giới hạn cao hơn, nhiều reaction roles, nhiều trigger, sticky messages, levels, temp channels — nhiều hơn mọi thứ cho server nghiêm túc.</p>
+      <a href="#" class="feature-link">Tìm hiểu thêm →</a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="docs">
+    <div class="cta-card">
+      <h2>Ready to upgrade your server?</h2>
+      <p>Tham gia cùng hàng triệu cộng đồng đã chạy Conflux.</p>
+      <div class="cta-buttons">
+        <a href="https://discord.com/oauth2/authorize?client_id=1556225313598472222&permissions=1101659111702&scope=bot%20applications.commands"
+           class="btn-primary" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+          </svg>
+          Add to Discord
+        </a>
+        <a href="#" class="btn-ghost">📖 Read the docs</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============================================================
+     PAGE: DASHBOARD
+============================================================ -->
+<div id="page-dashboard" style="display:none;">
+  <div class="dashboard">
+
+    <div id="dashboardLoading" class="loading">
+      <div class="spinner"></div>
+      <p>Đang tải dữ liệu...</p>
+    </div>
+
+    <div id="dashboardContent" style="display:none;">
+      <div class="user-header">
+        <img class="user-avatar" id="userAvatar" src="" alt="avatar">
+        <div class="user-info">
+          <h2>
+            <span id="userName">User</span>
+            <span class="user-badge">🌌 CONFLUX</span>
+          </h2>
+          <p>ID: <span id="userId">-</span></p>
+        </div>
+        <button class="logout-btn" onclick="handleLogout()">🚪 Đăng xuất</button>
+      </div>
+
+      <div class="section-header">
+        <h3>📊 Servers của bạn</h3>
+        <span id="guildCount">0 server</span>
+      </div>
+
+      <div class="guild-grid" id="guildGrid"></div>
+
+      <div id="emptyState" class="empty-state" style="display:none;">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+        </svg>
+        <h3>Không có server nào</h3>
+        <p>Bạn chưa có server nào có quyền "Manage Server".</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-brand">
+      <h3>Conflux</h3>
+      <p>A service provided by Conflux.gg · All Rights Reserved</p>
+    </div>
+    <div class="footer-links">
+      <a href="#">Terms of Use</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Copyright Dispute</a>
+      <a href="#">GDPR Notice</a>
+      <a href="#">Cookie Policy</a>
+      <a href="#">EULA</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const CONFIG = {
+  CLIENT_ID: '1556225313598472222',
+  // ⚠️ Trong production, KHÔNG để secret ở client!
+  // Dùng backend proxy hoặc implicit grant flow.
+  REDIRECT_URI: window.location.origin + window.location.pathname,
+  API_BASE: 'http://localhost:5001',   // Bot API
+  API_KEY: 'conflux_secret_key_change_me'
+};
+
+// ============================================================
+// ROUTING (đơn giản dựa trên hash)
+// ============================================================
+function showPage(page) {
+  document.getElementById('page-home').style.display = page === 'home' ? 'block' : 'none';
+  document.getElementById('page-dashboard').style.display = page === 'dashboard' ? 'block' : 'none';
+  window.scrollTo({ top:0, behavior:'smooth' });
+
+  if (page === 'dashboard') {
+    loadDashboard();
+  }
+}
+
+function checkRoute() {
+  const hash = window.location.hash.replace('#', '');
+  if (hash === 'dashboard' || hash.startsWith('access_token')) {
+    showPage('dashboard');
+  } else {
+    showPage('home');
+  }
+}
+
+window.addEventListener('hashchange', checkRoute);
+
+// ============================================================
+// MENU
+// ============================================================
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+// Đóng menu khi click link
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+  });
+});
+
+// ============================================================
+// DISCORD OAUTH2 — Implicit Grant (đơn giản cho static HTML)
+// ============================================================
+function handleLogin(event) {
+  event.preventDefault();
+
+  const token = localStorage.getItem('discord_token');
+
+  if (token) {
+    // Đã login → chuyển dashboard
+    window.location.hash = 'dashboard';
+    showPage('dashboard');
+    return;
+  }
+
+  // Chưa login → redirect Discord
+  const params = new URLSearchParams({
+    client_id: CONFIG.CLIENT_ID,
+    redirect_uri: CONFIG.REDIRECT_URI,
+    response_type: 'token',
+    scope: 'identify guilds',
+    prompt: 'consent'
+  });
+
+  window.location.href = `https://discord.com/oauth2/authorize?${params.toString()}`;
+}
+
+function handleLogout() {
+  localStorage.removeItem('discord_token');
+  localStorage.removeItem('discord_user');
+  updateLoginButton();
+  window.location.hash = '';
+  showPage('home');
+}
+
+// ============================================================
+// PARSE TOKEN TỪ URL HASH (sau khi redirect từ Discord)
+// ============================================================
+function parseTokenFromHash() {
+  const hash = window.location.hash.substring(1);
+  if (!hash) return null;
+
+  const params = new URLSearchParams(hash);
+  const token = params.get('access_token');
+  const expiresIn = params.get('expires_in');
+
+  if (token) {
+    localStorage.setItem('discord_token', token);
+    localStorage.setItem('discord_token_expires',
+      Date.now() + (parseInt(expiresIn) * 1000));
+
+    // Xoá token khỏi URL
+    history.replaceState(null, '', window.location.pathname);
+    return token;
+  }
+  return null;
+}
+
+function getToken() {
+  const token = localStorage.getItem('discord_token');
+  const expires = localStorage.getItem('discord_token_expires');
+
+  if (!token) return null;
+  if (expires && Date.now() > parseInt(expires)) {
+    localStorage.removeItem('discord_token');
+    localStorage.removeItem('discord_token_expires');
+    return null;
+  }
+  return token;
+}
+
+// ============================================================
+// FETCH USER INFO
+// ============================================================
+async function fetchUser(token) {
+  try {
+    const res = await fetch('https://discord.com/api/v10/users/@me', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error('Failed to fetch user');
+    return await res.json();
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
+
+async function fetchGuilds(token) {
+  try {
+    const res = await fetch('https://discord.com/api/v10/users/@me/guilds', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error('Failed to fetch guilds');
+    return await res.json();
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+async function loadDashboard() {
+  const token = getToken();
+
+  if (!token) {
+    // Chưa login → hiển thị thông báo
+    document.getElementById('dashboardLoading').innerHTML = `
+      <div style="text-align:center;padding:60px 20px;">
+        <h3 style="font-size:24px;margin-bottom:12px;">🔒 Chưa đăng nhập</h3>
+        <p style="color:#a1a1b8;margin-bottom:24px;">Vui lòng đăng nhập để xem dashboard.</p>
+        <button class="btn-login" onclick="handleLogin(event)" style="font-size:16px;padding:12px 28px;">
+          Login with Discord
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  document.getElementById('dashboardLoading').style.display = 'block';
+  document.getElementById('dashboardContent').style.display = 'none';
+
+  const [user, guilds] = await Promise.all([
+    fetchUser(token),
+    fetchGuilds(token)
+  ]);
+
+  if (!user) {
+    // Token hết hạn
+    handleLogout();
+    return;
+  }
+
+  localStorage.setItem('discord_user', JSON.stringify(user));
+  updateLoginButton(user);
+
+  // Hiển thị thông tin user
+  document.getElementById('userName').textContent = user.global_name || user.username;
+  document.getElementById('userId').textContent = user.id;
+  document.getElementById('userAvatar').src =
+    user.avatar
+      ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`
+      : 'https://cdn.discordapp.com/embed/avatars/0.png';
+
+  // Lọc guild user có quyền quản lý
+  const managedGuilds = guilds.filter(g => {
+    const perms = parseInt(g.permissions || 0);
+    const MANAGE_GUILD = 0x20;
+    const ADMINISTRATOR = 0x8;
+    return (perms & MANAGE_GUILD) || (perms & ADMINISTRATOR);
+  });
+
+  // Lấy danh sách guild bot đã có (từ API bot nếu chạy)
+  let botGuilds = [];
+  try {
+    const res = await fetch(`${CONFIG.API_BASE}/api/guilds`, {
+      headers: { 'X-API-Key': CONFIG.API_KEY }
+    });
+    if (res.ok) botGuilds = await res.json();
+  } catch (e) {
+    // Bot API không chạy → bỏ qua
+  }
+
+  const botGuildIds = new Set(botGuilds.map(g => g.id));
+
+  // Render
+  const grid = document.getElementById('guildGrid');
+  grid.innerHTML = '';
+
+  if (managedGuilds.length === 0) {
+    document.getElementById('emptyState').style.display = 'block';
+    document.getElementById('guildCount').textContent = '0 server';
+  } else {
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('guildCount').textContent = `${managedGuilds.length} server`;
+
+    managedGuilds.forEach(g => {
+      const hasBot = botGuildIds.has(g.id);
+      const iconUrl = g.icon
+        ? `https://cdn.discordapp.com/icons/${g.id}/${g.icon}.png?size=128`
+        : null;
+
+      const card = document.createElement('div');
+      card.className = 'guild-card';
+      card.onclick = () => {
+        if (hasBot) {
+          alert(`🚧 Dashboard cho: ${g.name}\n(Tính năng đang phát triển)`);
+        } else {
+          const url = `https://discord.com/oauth2/authorize?client_id=${CONFIG.CLIENT_ID}&permissions=1101659111702&scope=bot%20applications.commands&guild_id=${g.id}&disable_guild_select=true`;
+          window.open(url, '_blank');
+        }
+      };
+
+      card.innerHTML = `
+        <div class="guild-icon">
+          ${iconUrl ? `<img src="${iconUrl}" alt="${g.name}">` : g.name[0].toUpperCase()}
+        </div>
+        <div class="guild-info">
+          <h4>${g.name}</h4>
+          <span class="guild-status ${hasBot ? 'active' : 'inactive'}">
+            ${hasBot ? '✅ Bot đã ở trong' : '➕ Thêm bot'}
+          </span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  document.getElementById('dashboardLoading').style.display = 'none';
+  document.getElementById('dashboardContent').style.display = 'block';
+}
+
+// ============================================================
+// LOGIN BUTTON STATE
+// ============================================================
+function updateLoginButton(user) {
+  const btn = document.getElementById('loginBtn');
+  const text = document.getElementById('loginText');
+
+  if (!btn || !text) return;
+
+  const token = getToken();
+  if (token && user) {
+    text.textContent = user.global_name || user.username;
+  } else if (token) {
+    text.textContent = 'Dashboard';
+  } else {
+    text.textContent = 'Login';
+  }
+}
+
+// ============================================================
+// SERVER COUNT (animate khi bot API available)
+// ============================================================
+async function loadServerCount() {
+  const el = document.getElementById('server-count');
+  if (!el) return;
+
+  try {
+    const res = await fetch(`${CONFIG.API_BASE}/api/stats`, {
+      headers: { 'X-API-Key': CONFIG.API_KEY }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      animateCounter(el, data.guilds || 0);
+      return;
+    }
+  } catch (e) {
+    // Bot API không chạy
+  }
+
+  // Fallback: animation giả
+  animateCounter(el, 15257943);
+}
+
+function animateCounter(el, target, duration = 2000) {
+  let start = 0;
+  const step = target / (duration / 16);
+  const timer = setInterval(() => {
+    start += step;
+    if (start >= target) {
+      el.textContent = target.toLocaleString('vi-VN');
+      clearInterval(timer);
+    } else {
+      el.textContent = Math.floor(start).toLocaleString('vi-VN');
+    }
+  }, 16);
+}
+
+// ============================================================
+// SCROLL ANIMATION
+// ============================================================
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold:0.1 });
+
+document.querySelectorAll('.fade-in').forEach((el, i) => {
+  el.style.transitionDelay = `${(i % 3) * 100}ms`;
+  observer.observe(el);
+});
+
+// Navbar shadow on scroll
+window.addEventListener('scroll', () => {
+  const navbar = document.getElementById('navbar');
+  if (window.scrollY > 50) {
+    navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+  } else {
+    navbar.style.boxShadow = 'none';
+  }
+});
+
+// Smooth scroll cho anchor
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  const href = link.getAttribute('href');
+  if (href === '#' || href.startsWith('#dashboard')) return;
+
+  link.addEventListener('click', (e) => {
+    const target = document.querySelector(href);
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+  });
+});
+
+// ============================================================
+// INIT
+// ============================================================
+(async function init() {
+  // Parse token nếu có trong URL hash
+  parseTokenFromHash();
+
+  // Update login button
+  const token = getToken();
+  if (token) {
+    const cached = localStorage.getItem('discord_user');
+    if (cached) {
+      try {
+        updateLoginButton(JSON.parse(cached));
+      } catch (e) {}
+    }
+    // Fetch fresh info
+    const user = await fetchUser(token);
+    if (user) {
+      localStorage.setItem('discord_user', JSON.stringify(user));
+      updateLoginButton(user);
+    }
+  } else {
+    updateLoginButton(null);
+  }
+
+  // Load server count
+  loadServerCount();
+
+  // Check route
+  checkRoute();
+
+  // Nếu có token mà chưa có hash → vào dashboard
+  if (getToken() && !window.location.hash) {
+    window.location.hash = 'dashboard';
+    showPage('dashboard');
+  }
+})();
+</script>
+
+</body>
+</html>
